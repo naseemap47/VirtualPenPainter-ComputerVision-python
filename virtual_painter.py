@@ -20,6 +20,7 @@ draw_position = []
 def findColors(img, color_parameters, color_value):
     hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     count = 0
+    new_points = []
     for color in color_parameters:
         lower = np.array(color[0:3])
         upper = np.array(color[3:6])
@@ -28,8 +29,9 @@ def findColors(img, color_parameters, color_value):
         x, y = getContours(mask)
         cv2.circle(img_copy, (x, y), 5, color_value[count], cv2.FILLED)
         if x != 0 and y != 0:
-            draw_position.append([x, y, count])
+            new_points.append([x, y, count])
         count += 1
+    return new_points
 
 
 def getContours(img):
@@ -48,7 +50,7 @@ def getContours(img):
 
 def drawPen(img, positions, color_val):
     for position in positions:
-        print(position)
+        # print(position)
         cv2.circle(img, (position[0], position[1]),
                    5, color_val[position[2]], cv2.FILLED
                    )
@@ -59,8 +61,12 @@ cap = cv2.VideoCapture(0)
 while True:
     success, img = cap.read()
     img_copy = img.copy()
-    findColors(img, color_parameters, color_value)
+    new_points = findColors(img, color_parameters, color_value)
     # print(draw_position)
-    drawPen(img, draw_position, color_value)
+    if len(new_points) != 0:
+        for point in new_points:
+            draw_position.append(point)
+    if len(draw_position) != 0:
+        drawPen(img_copy, draw_position, color_value)
     cv2.imshow('Result', img_copy)
     cv2.waitKey(1)

@@ -11,10 +11,11 @@ color_parameters = [
 
 def findColors(img, color_parameters):
     hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    lower = np.array(color_parameters[0][0:3])
-    upper = np.array(color_parameters[0][3:6])
-    mask = cv2.inRange(hsv_img, lower, upper)
-    cv2.imshow("Mask", mask)
+    for color in color_parameters:
+        lower = np.array(color[0:3])
+        upper = np.array(color[3:6])
+        mask = cv2.inRange(hsv_img, lower, upper)
+        cv2.imshow(str(color[0]), mask)
 
 cap = cv2.VideoCapture(0)
 

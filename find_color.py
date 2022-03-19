@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 
 
 def empty(a):
@@ -29,6 +30,12 @@ while True:
     v_min = cv2.getTrackbarPos('Val Min', 'TrackBars')
     v_max = cv2.getTrackbarPos('Val Max', 'TrackBars')
 
+    # Mask
+    lower = np.array([h_min, s_min, v_min])
+    upper = np.array([h_max, s_max, v_max])
+    mask = cv2.inRange(hsv_img, lower, upper)
+
     cv2.imshow("Image", img)
     cv2.imshow("HSV", hsv_img)
+    cv2.imshow("Mask", mask)
     cv2.waitKey(1)

@@ -35,6 +35,13 @@ while True:
     upper = np.array([h_max, s_max, v_max])
     mask = cv2.inRange(hsv_img, lower, upper)
 
+    """
+    Color - h_min h_max s_min s_max v_min v_max
+    Blue - 90 133 86 178 40 79
+    Yellow - 0 32 126 255 128 255
+    Green - 33 69 98 255 81 255
+    """
+
     cv2.imshow("Image", img)
     cv2.imshow("HSV", hsv_img)
     cv2.imshow("Mask", mask)

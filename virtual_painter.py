@@ -15,13 +15,23 @@ def findColors(img, color_parameters):
         lower = np.array(color[0:3])
         upper = np.array(color[3:6])
         mask = cv2.inRange(hsv_img, lower, upper)
-        cv2.imshow(str(color[0]), mask)
+        # cv2.imshow(str(color[0]), mask)
+        getContours(mask)
+
+def getContours(img):
+    contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    for cnt in contours:
+        area = cv2.contourArea(cnt)
+        print(area)
+        if area > 1000:
+            cv2.drawContours(img_copy, cnt, -1, (255, 0, 255), 3)
+
 
 cap = cv2.VideoCapture(0)
 
 while True:
     success, img = cap.read()
-
+    img_copy = img.copy()
     findColors(img, color_parameters)
-    cv2.imshow('Result', img)
+    cv2.imshow('Result', img_copy)
     cv2.waitKey(1)
